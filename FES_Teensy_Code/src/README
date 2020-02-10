@@ -1,0 +1,7 @@
+Currently the Code does not support commands.  However, there are functions included, that once completed, will alow the user to control the PID constraints to control the voltage output,
+change the amount of voltage output from the High Voltage converter, and switch the relays on and off.  In the main.cpp file, there is a commented out block of code with the routine
+that will control the process of power transferring between the Capacitor bank and the DEA.
+
+THIS CODE IS NOT FINAL AND WILL NOT WORK AS EXPECTED DUE TO HANG UPS WITH THE PROTOTYPING BOARD.
+
+The code is ready but please do not run until the board is complete.

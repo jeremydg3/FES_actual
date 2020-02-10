@@ -1,0 +1,10 @@
+control - describes the control code used to calculate PID constraints and adjust the PWM accordingly
+
+definitions - sets the pin definitions and variable declarations for all hardware/software functionality
+
+readADC - customized code used to communicate with our ADC to read voltages, output can be changed to reflect the binary reading, resolution reading, 
+low voltage reading or converted high voltage reading
+
+safetyDrain - this code drains all capactitors through a resistor bank to safely discharge all active parts of the high voltage circuit
+
+stringParsingFunctions - functions to communicate with the user on the computer side or decipher commands
