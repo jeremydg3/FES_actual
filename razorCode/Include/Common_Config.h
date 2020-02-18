@@ -60,7 +60,6 @@
   #include "./Communication_Config.h"
   #include "./Math.h"
   #include "./Log_Config.h"
-  #include "./FES_Specific_Config.h"
 
   #ifdef _IMU10736_
     #include "./IMU10736_Config.h"

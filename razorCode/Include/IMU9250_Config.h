@@ -74,15 +74,14 @@
 ** PITCH_O:1 - Pitch orientation #1. Angle x-axis w/ Horizontal Plane  +Rot:Aft-Down    0:Nadir0/Zenith down. +90:Aft down   -90:Fore down
 ** PITCH_O:2 - Pitch orientation #2. Angle y-axis w/ Horizontal Plane  +Rot:Port-Down   0:Fore/Aft down       +90:Port down  -90:Starboard down
 ** PITCH_O:3 - Pitch orientation #3. Angle z-axis w/ Horizontal Plane  +Rot:Nadir-Down  0:Fore/Aft down       +90:Nadir down -90:Zenith down */
-#define PITCH_O  2
+#define PITCH_O  1
 
 /* Pitch rotation convention
 ** This sets the sign of rotation for pitch
 **   1 :+Towards +axis
 **  -1 :+Towards -axis */
-#define PITCH_ROT_CONV  1
-#define ROLL_ROT_CONV   -1
-#define ROLL_ZREF 		1
+#define PITCH_ROT_CONV  -1
+
 
 /* NOTE:
 ** Since Pitch is -90:+90, there is no "PITCH_ZREF"
@@ -93,13 +92,13 @@
 ** This sets the sign of rotation for roll
 **   1 :+Towards +axis
 **  -1 :+Towards -axis */
-//#define ROLL_ROT_CONV -1
+#define ROLL_ROT_CONV -1
 
 /* Roll rotation reference direction
 ** This will reverse the direction of the "0" reference for roll
 **   1 :"0" is in direction of +axis (Fore)
 **  -1 :"0" is in direction of -axis (Aft) */
-//#define ROLL_ZREF 1
+#define ROLL_ZREF 1
 
 
 
@@ -150,8 +149,8 @@
 /* Sampling resolution
 *******************************************************************/
 /* Set the system sampling rate */
-//#define TIME_SR         200.0f    /* Warning: depends on sensor settings! */
-#define TIME_SR         99999.0f    /* Warning: depends on sensor settings! */
+#define TIME_SR         200.0f    /* Warning: depends on sensor settings! */
+//#define TIME_SR         99999.0f    /* Warning: depends on sensor settings! */
 
 /* Resolution of system time
 ** Used to set delta T - see Update_Time */

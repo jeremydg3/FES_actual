@@ -64,7 +64,17 @@ void readFSR() {
 }
 
 void updateRelPV() {
-  // to-do
+  if ((phaseVar >= 0 && phaseVar < 0.4)) {
+    relayControl(3, 0);
+  } else if ((phaseVar >= 0.4 && phaseVar < 0.6)) {
+    // toes pushing off
+    relaycontrol(2, 0);
+    relayControl(1, 1);
+  } else if ((phaseVar >= 0.6 && phaseVar < 1.0)) {
+    // toes up
+    relayControl(1, 0);
+    relayControl(2, 1);
+  }
 }
 
 void updateFSRStep() {

@@ -15,6 +15,14 @@
 ** Defines
 ********************************************************************/
 
+/*
+Look at:
+GAPA_Kp_phi
+GAPA_Ki_phi
+GAPA_PHImw_ALPHA
+GAPA_phimw_ALPHA
+*/
+
 //#define GAPA_Kp_PHI 0.01
 //#define GAPA_Kp_PHI 0.001
 #define GAPA_Kp_PHI 0.016 /* 1/sr */   

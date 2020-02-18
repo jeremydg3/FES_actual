@@ -171,23 +171,23 @@ void Debug_LogOut( CONTROL_TYPE       *p_control,
 //      strcat( LogBuffer, tmpBuffer );
 //  UART_PORT.print((float)TO_DEG(p_sensor_state->yaw.val[0]));
 //  UART_PORT.print(',');
-//  UART_PORT.print((float)TO_DEG(p_sensor_state->pitch.val[0]));
+//  UART_PORT.println((float)TO_DEG(p_sensor_state->pitch.val[0]));
 //  UART_PORT.print(',');
 //  UART_PORT.println((float)TO_DEG(p_sensor_state->roll.val[0]));
   
 
-//      UART_PORT.print(p_sensor_state->accel.val[0]*0.0001,3);
-//      UART_PORT.print(',');
-//      UART_PORT.print(p_sensor_state->accel.val[1]*0.0001,3);
-//      UART_PORT.print(',');
-//      UART_PORT.print(p_sensor_state->accel.val[2]*0.0001,3);
-//      UART_PORT.print(';');
-//      UART_PORT.print(p_sensor_state->gyro.val[0]*0.0001,3);
-//      UART_PORT.print(',');
-//      UART_PORT.print(p_sensor_state->gyro.val[1]*0.0001,3);
-//      UART_PORT.print(',');
-//      UART_PORT.print(p_sensor_state->gyro.val[2]*0.0001,3);
-//      UART_PORT.print(';');
+      UART_PORT.print(p_sensor_state->accel.val[0]*0.0001,3);
+      UART_PORT.print(',');
+      UART_PORT.print(p_sensor_state->accel.val[1]*0.0001,3);
+      UART_PORT.print(',');
+      UART_PORT.print(p_sensor_state->accel.val[2]*0.0001,3);
+      UART_PORT.print(';');
+      UART_PORT.print(p_sensor_state->gyro.val[0]*0.0001,3);
+      UART_PORT.print(',');
+      UART_PORT.print(p_sensor_state->gyro.val[1]*0.0001,3);
+      UART_PORT.print(',');
+      UART_PORT.print(p_sensor_state->gyro.val[2]*0.0001,3);
+      UART_PORT.print(';');
       UART_PORT.println(p_gapa_state->nu_norm.val[0],3);
 
 //  Packet[8] = (float)TO_DEG(p_sensor_state->pitch.val[0]);

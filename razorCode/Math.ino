@@ -540,6 +540,9 @@ void Update_Stats_2D(
   /* Add new sample into array */
   //circular_shift_array_2D( p_sample_data->val, 3, 3, 1, 1 );
   memcpy( p_sample_data->val, p_new_sample, 3*sizeof(float) );
+  //p_sample_data->val[2] = p_sample_data->val[1]
+  //p_sample_data->val[1] = p_sample_data->val[0]
+  //p_sample_data->val[0] = p_new_sample
   
   /* Update magnitude */
   circular_shift_array_1D( p_sample_data->mag, 3, 1 );

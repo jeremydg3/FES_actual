@@ -203,8 +203,8 @@ do{ \
 
 #if EXE_MODE==0 /* 0 : IMU Mode */
   /* The debug port is simply the serial terminal */
-  //#define UART_PORT SERIAL_PORT_HARDWARE
-  #define UART_PORT  SERIAL_PORT_USBVIRTUAL
+  #define UART_PORT SERIAL_PORT_HARDWARE
+  //#define UART_PORT  SERIAL_PORT_USBVIRTUAL
   #define UART_AVAILABLE UART_PORT.available()
 
   /* Serial I/O */

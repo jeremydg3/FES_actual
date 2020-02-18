@@ -190,8 +190,8 @@ void GaPA_Update( CONTROL_TYPE      *p_control,
     case 1 : /* PHI */
       tmpf =  p_sensor_state->pitch.val[0] - p_gapa_state->PErr_phi - p_gapa_state->IErr_phi;
       Update_Stats_1D( p_control, &p_gapa_state->phi, tmpf );
-      
-      tmpf += p_gapa_state->phi.val[0]*p_control->G_Dt - p_gapa_state->PErr_PHI - p_gapa_state->IErr_PHI;
+      //tmpf += p_gapa_state->phi.val[0]*p_control->G_Dt - p_gapa_state->PErr_PHI - p_gapa_state->IErr_PHI;
+      tmpf = p_gapa_state->PHI.val[0] + p_gapa_state->phi.val[0]*p_control->G_Dt;// - p_gapa_state->PErr_PHI - p_gapa_state->IErr_PHI;
       Update_Stats_1D( p_control, &p_gapa_state->PHI, tmpf );
       break;
     case 2 : /* PHV */
@@ -203,6 +203,8 @@ void GaPA_Update( CONTROL_TYPE      *p_control,
       break;
   } /* End version switch */
   
+//  UART_PORT.print('\t');
+//  UART_PORT.println( p_gapa_state->IErr_PHI);
   /* Compute phase variable feedback error */
   p_gapa_state->PErr_phi =  p_gapa_state->phi.val_mave * p_control->gapa_prms.Kp_phi;
   p_gapa_state->IErr_phi += p_gapa_state->phi.val_mave * p_control->gapa_prms.Ki_phi;
@@ -219,12 +221,18 @@ void GaPA_Update( CONTROL_TYPE      *p_control,
   p_gapa_state->PHIn = (p_gapa_state->PHI.val_mave/p_gapa_state->z_PHI);
 
   /* Normalize to 1 for ease of computation and visualization */
-  R = sqrt( p_gapa_state->phin*p_gapa_state->phin + p_gapa_state->PHIn*p_gapa_state->PHIn );
-  p_gapa_state->phin = p_gapa_state->phin/R;
-  p_gapa_state->PHIn = p_gapa_state->PHIn/R;
+  //R = sqrt( p_gapa_state->phin*p_gapa_state->phin + p_gapa_state->PHIn*p_gapa_state->PHIn );
+  //p_gapa_state->phin = p_gapa_state->phin/R;
+  //p_gapa_state->PHIn = p_gapa_state->PHIn/R;
+//  UART_PORT.print(p_gapa_state->phin);
+//  UART_PORT.print('\t');
+//  UART_PORT.println(p_gapa_state->PHIn);
 
   /* We can only get a phase angle ofter 3 iterations */
   if( p_control->SampleNumber<10 ){ return; }
+
+  
+  
 
   /* Get the shift variables by determining the phase portrait center */
   p1[0] = p_gapa_state->phi.val[1]; p1[1] = p_gapa_state->PHI.val[1];
@@ -233,12 +241,23 @@ void GaPA_Update( CONTROL_TYPE      *p_control,
   calc_circle_center( p1, p2, p3, &center[0] );
   p_gapa_state->gamma = -center[0];
   p_gapa_state->GAMMA = -center[1];
+//  UART_PORT.print(p_gapa_state->gamma);
+//  UART_PORT.print('\t');
+//  UART_PORT.println(p_gapa_state->GAMMA);
 
   /* Get the phase angle */
-  leftParam  = -1 * (p_gapa_state->PHIn+p_gapa_state->GAMMA);
-  rightParam = -1 * (p_gapa_state->phin+p_gapa_state->gamma);
-  //leftParam  = -1 * (p_gapa_state->PHI.val[0]+p_gapa_state->GAMMA);
-  //rightParam = -1 * (p_gapa_state->phi.val[0]+p_gapa_state->gamma);
+  //leftParam  = -1 * (p_gapa_state->PHIn+p_gapa_state->GAMMA);
+  //rightParam = -1 * (p_gapa_state->phin+p_gapa_state->gamma);
+  //leftParam  = -1 * (p_gapa_state->PHI.val[0]+p_gapa_state->GAMMA); // commented out
+  //rightParam = -1 * (p_gapa_state->phi.val[0]+p_gapa_state->gamma); // commented out
+  //leftParam  = -1 * (p_gapa_state->PHI.val[0]); // goodish
+  //rightParam = -1 * (p_gapa_state->phi.val[0]); // goodish
+  leftParam  = -1 * (p_gapa_state->PHI.val_mave); // best
+  rightParam = -1 * (p_gapa_state->phi.val_mave); // best
+  
+//  UART_PORT.print(leftParam);
+//  UART_PORT.print('\t');
+//  UART_PORT.println(rightParam);
   tmpf = f_atan2( leftParam, rightParam );
   Update_Stats_1D( p_control, &p_gapa_state->nu, tmpf );
   
@@ -253,6 +272,17 @@ void GaPA_Update( CONTROL_TYPE      *p_control,
     tmpf = 0.5f;
   }
   Update_Stats_1D( p_control, &p_gapa_state->nu_norm, tmpf );
+
+  
+  //UART_PORT.print(p_sensor_state->pitch.val[0]);
+  //UART_PORT.print('\t');
+  //UART_PORT.print(p_gapa_state->PHI.val[0]);
+  //UART_PORT.print('\t');
+  //UART_PORT.println(p_gapa_state->phi.val[0]);
+//  UART_PORT.println(p_gapa_state->nu_norm.val[0]);
+//  UART_PORT.print(p_gapa_state->phi.val_mave);
+//  UART_PORT.print('\t');
+//  UART_PORT.println(p_gapa_state->PHI.val_mave);
   
   /* Reset the normalization term at the start of each gait cycle
   ** The normalization term(i.e. the scaling factors "z") is the maximum
@@ -294,6 +324,7 @@ void GaPA_Update( CONTROL_TYPE      *p_control,
         
     p_gapa_state->nu_norm.val[0] = 0.0;
   }
+  
 
 }/* End GaPA_Update */
 
