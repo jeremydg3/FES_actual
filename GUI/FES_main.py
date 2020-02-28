@@ -5,6 +5,7 @@ from kivy.properties import ObjectProperty
 from kivy.uix.popup import Popup
 from kivy.uix.label import Label
 from kivy_garden.graph import MeshLinePlot
+from kivy.graphics import *
 import serial
 from serial import Serial
 import sys
