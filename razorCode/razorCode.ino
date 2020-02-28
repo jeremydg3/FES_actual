@@ -199,7 +199,7 @@ void loop( void )
     /* Read/Respond to command */
   //if( SERIAL_AVAILABLE>0 ){ f_RespondToInput( &g_control, &g_sensor_state, &g_calibration, SERIAL_AVAILABLE ); }
   if( UART_AVAILABLE>0 ){ int t = UART_PORT.read(); Debug_LogOut( &g_control, &g_sensor_state, &g_gapa_state, &g_wise_state);}
-  //Debug_LogOut( &g_control, &g_sensor_state, &g_gapa_state, &g_wise_state);
+//  Debug_LogOut( &g_control, &g_sensor_state, &g_gapa_state, &g_wise_state);
 
   /* We blink every LOG_INFO_RATE millisecods */
   if ( micros()>(g_control.LastLogTime+DATA_LOG_RATE) )

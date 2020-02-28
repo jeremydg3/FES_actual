@@ -23,26 +23,40 @@ GAPA_PHImw_ALPHA
 GAPA_phimw_ALPHA
 */
 
+//#define GAPA_Kp_PHI 0.016
+//#define GAPA_Kp_phi 1
+//#define GAPA_Ki_PHI 0.00002
+//#define GAPA_Ki_phi 0.005
+//#define GAPA_PHImw_ALPHA 0.1
+//#define GAPA_phimw_ALPHA 0.1
+
+#define GAPA_Kp_PHI 0.016
+#define GAPA_Kp_phi 0.1
+#define GAPA_Ki_PHI 0.0002
+#define GAPA_Ki_phi 0.003
+#define GAPA_PHImw_ALPHA 0.2
+#define GAPA_phimw_ALPHA 0.2
+
 //#define GAPA_Kp_PHI 0.01
 //#define GAPA_Kp_PHI 0.001
-#define GAPA_Kp_PHI 0.016 /* 1/sr */   
+//#define GAPA_Kp_PHI 0.016 /* 1/sr */   
 //#define GAPA_Ki_PHI 0
-#define GAPA_Ki_PHI 0.00002
+//#define GAPA_Ki_PHI 0.00002
 
-#define GAPA_Kp_phi 1
+//#define GAPA_Kp_phi 1
 //#define GAPA_Kp_phi 0.01
 //#define GAPA_Kp_phi 0.0001
 //#define GAPA_Ki_phi 0.01
 //#define GAPA_Ki_phi 0.02
-#define GAPA_Ki_phi 0.005
+//#define GAPA_Ki_phi 0.005
 
 //#define GAPA_PHImw_ALPHA 0.01
 //#define GAPA_PHImw_ALPHA 0.006
-#define GAPA_PHImw_ALPHA 0.1
+//#define GAPA_PHImw_ALPHA 0.1
 
 //#define GAPA_phimw_ALPHA 0.01
 //#define GAPA_phimw_ALPHA 0.006
-#define GAPA_phimw_ALPHA 0.1
+//#define GAPA_phimw_ALPHA 0.1
 
 #define GAPA_MIN_GYRO 200.0f
 #define GAPA_GAIT_END_THRESH 1.5708
