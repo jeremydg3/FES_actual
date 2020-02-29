@@ -3,13 +3,19 @@
 <serialWindow>:
     name: 'serial'
     
+
     FloatLayout:
         canvas:
             Color:
                 rgb: 1,0,0
             Rectangle:
-                pos: 0.3, 0.9
-                size: 0.1, 0.05
+                pos: 0.2*self.width, 0.01*self.height
+                size: 0.04*self.width , 0.035*self.height
+            Color:
+                rgb: 1,0,0
+            Rectangle:
+                pos: 0.7*self.width, 0.01*self.height
+                size: 0.04*self.width , 0.035*self.height
         Button:
             pos_hint: {'x': 0, 'top': 1}
             size_hint: 0.25, 0.1
@@ -61,13 +67,6 @@
             text: 'Recording'
 
 
-        
-
-        
-            
-
-        
-
 <calibrationWindow>:
     name: 'calibration'
 
@@ -77,6 +76,17 @@
     rhVal: rhVal
 
     FloatLayout:
+        canvas:
+            Color:
+                rgb: 1,0,0
+            Rectangle:
+                pos: 0.2*self.width, 0.01*self.height
+                size: 0.04*self.width , 0.035*self.height
+            Color:
+                rgb: 1,0,0
+            Rectangle:
+                pos: 0.7*self.width, 0.01*self.height
+                size: 0.04*self.width , 0.035*self.height
         Button:
             pos_hint: {'x': 0, 'top': 1}
             size_hint: 0.25, 0.1
@@ -211,6 +221,17 @@
     orientation: 'vertical'
 
     FloatLayout:
+        canvas:
+            Color:
+                rgb: 1,0,0
+            Rectangle:
+                pos: 0.2*self.width, 0.01*self.height
+                size: 0.04*self.width , 0.035*self.height
+            Color:
+                rgb: 1,0,0
+            Rectangle:
+                pos: 0.7*self.width, 0.01*self.height
+                size: 0.04*self.width , 0.035*self.height
         Button:
             pos_hint: {'x': 0, 'top': 1}
             size_hint: 0.25, 0.1
@@ -291,6 +312,17 @@
     orientation: 'vertical'
 
     FloatLayout:
+        canvas:
+            Color:
+                rgb: 1,0,0
+            Rectangle:
+                pos: 0.2*self.width, 0.01*self.height
+                size: 0.04*self.width , 0.035*self.height
+            Color:
+                rgb: 1,0,0
+            Rectangle:
+                pos: 0.7*self.width, 0.01*self.height
+                size: 0.04*self.width , 0.035*self.height
         Button:
             pos_hint: {'x': 0, 'top': 1}
             size_hint: 0.25, 0.1

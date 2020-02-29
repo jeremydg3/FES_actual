@@ -10,6 +10,10 @@ import serial
 from serial import Serial
 import sys
 
+connected = False
+recording = False 
+redC = (1,0,0)
+greenC = (0,1,0)
 # This function comes graciously from StackOverflow
 # Finds all available serial ports, and returns as a list
 def FindAllSerialPorts():
@@ -43,7 +47,7 @@ def FindAllSerialPorts():
 # Window Classes**********************************************
 class serialWindow(Screen):
     print('serial')
-
+    
 
 
 class calibrationWindow(Screen):
@@ -54,6 +58,7 @@ class calibrationWindow(Screen):
 
     def startFSRCalibration(self):
         print('starting calibration')
+        print(self.width/2.)
 
     def endFSRCalibration(self):
         print('calibration ended')
