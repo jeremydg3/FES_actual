@@ -2,57 +2,75 @@
 
 <serialWindow>:
     name: 'serial'
-    
-
     FloatLayout:
         canvas:
+            # background-----------------------------------
             Color:
-                rgb: 1,0,0
+                rgb: 178/255, 182/255, 176/255
+            Rectangle:
+                pos: 0, 0
+                size: self.width, self.height
+
+            # background for serial indicators-------------
+            Color:
+                rgb: 53/255, 69/255, 81/255
+            Rectangle:
+                pos: 0, 0
+                size: self.width, 0.05*self.height
+
+            # indicators-----------------------------------
+            # serial connection indicator
+            Color:
+                rgba: root.serialIndicatorC
             Rectangle:
                 pos: 0.2*self.width, 0.01*self.height
                 size: 0.04*self.width , 0.035*self.height
+
+            # recording indicator
             Color:
-                rgb: 1,0,0
+                rgba: root.recordIndicatorC
             Rectangle:
                 pos: 0.7*self.width, 0.01*self.height
                 size: 0.04*self.width , 0.035*self.height
+            
         Button:
-            pos_hint: {'x': 0, 'top': 1}
-            size_hint: 0.25, 0.1
+            pos_hint: {'x': 0.001, 'top': 1}
+            size_hint: 0.248, 0.1
             text: 'Serial'
             bold: True
-            background_normal: ''
-            background_color: [53/255, 69/255, 81/255,1]
+            background_normal:''
+            background_color: 53/255, 69/255, 81/255, 1
             on_press:
                 root.manager.transition.duration = '0.0'
                 root.manager.current = 'serial'
         Button:
-            pos_hint: {'x': 0.25, 'top': 1}
-            size_hint: 0.25, 0.1
+            pos_hint: {'x': 0.251, 'top': 1}
+            size_hint: 0.248, 0.1
             text: 'Calibration'
             bold: True
-            background_normal: ''
-            background_color: [28/255, 76/255, 116/255,1]
+            background_normal:''
+            background_color: 53/255, 69/255, 81/255, 1
             on_press:
                 root.manager.transition.duration = '0.0'
                 root.manager.current = 'calibration'
+                root.manager.current
         Button:
-            pos_hint: {'x': 0.50, 'top': 1}
-            size_hint: 0.25, 0.1
+            pos_hint: {'x': 0.501, 'top': 1}
+            size_hint: 0.248, 0.1
             text: 'Debug Mode'
             bold: True
-            background_normal: ''
-            background_color: [100/255, 140/255, 172/255,1]
+            background_normal:''
+            background_color: 53/255, 69/255, 81/255, 1
             on_press:
                 root.manager.transition.duration = '0.0'
                 root.manager.current = 'debug'
         Button:
-            pos_hint: {'x': 0.75, 'top': 1}
-            size_hint: 0.25, 0.1
+            pos_hint: {'x': 0.751, 'top': 1}
+            size_hint: 0.248, 0.1
             text: 'FES Mode'
             bold: True
-            background_normal: ''
-            background_color: [108/255, 180/255, 228/255,1]
+            background_normal:''
+            background_color: 53/255, 69/255, 81/255, 1
             on_press:
                 root.manager.transition.duration = '0.0'
                 root.manager.current = 'fes'
@@ -66,7 +84,37 @@
             size_hint: 0.25, 0.15
             text: 'Recording'
 
+        Button:
+            pos_hint: {'x': 0.1, 'top': 0.7}
+            size_hint: 0.2, 0.1
+            text: 'Refresh COM Ports'
+            on_press:
+                root.FindAllSerialPorts()
 
+        Button:
+            pos_hint: {'x': 0.1, 'top': 0.4}
+            size_hint: 0.2, 0.1
+            text: 'Connect'
+            on_press:
+                root.connectToSerial()
+
+        Button:
+            pos_hint: {'x': 0.4, 'top': 0.4}
+            size_hint: 0.2, 0.1
+            text: 'Disconnect'
+            on_press:
+                root.disconnectFromSerial()
+        Spinner:
+            pos_hint: {'x': 0.4, 'top': 0.7}
+            size_hint: 0.2, 0.1
+            text: 'Select Port'
+            text_autoupdate: True
+            values: root.result
+            on_text:
+                root.setPort(self.text)
+            
+
+        
 <calibrationWindow>:
     name: 'calibration'
 
@@ -77,56 +125,76 @@
 
     FloatLayout:
         canvas:
+            # background-----------------------------------
             Color:
-                rgb: 1,0,0
+                rgb: 178/255, 182/255, 176/255
+            Rectangle:
+                pos: 0, 0
+                size: self.width, self.height
+
+            # background for serial indicators-------------
+            Color:
+                rgb: 53/255, 69/255, 81/255
+            Rectangle:
+                pos: 0, 0
+                size: self.width, 0.05*self.height
+
+            # indicators-----------------------------------
+            # serial connection indicator
+            Color:
+                rgba: (root.serialIndicatorC)
             Rectangle:
                 pos: 0.2*self.width, 0.01*self.height
                 size: 0.04*self.width , 0.035*self.height
+
+            # recording indicator
             Color:
-                rgb: 1,0,0
+                rgba: (root.recordIndicatorC)
             Rectangle:
                 pos: 0.7*self.width, 0.01*self.height
                 size: 0.04*self.width , 0.035*self.height
+            
         Button:
-            pos_hint: {'x': 0, 'top': 1}
-            size_hint: 0.25, 0.1
+            pos_hint: {'x': 0.001, 'top': 1}
+            size_hint: 0.248, 0.1
             text: 'Serial'
             bold: True
-            background_normal: ''
-            background_color: [53/255, 69/255, 81/255,1]
+            background_normal:''
+            background_color: 53/255, 69/255, 81/255, 1
             on_press:
                 root.manager.transition.duration = '0.0'
                 root.manager.current = 'serial'
         Button:
-            pos_hint: {'x': 0.25, 'top': 1}
-            size_hint: 0.25, 0.1
+            pos_hint: {'x': 0.251, 'top': 1}
+            size_hint: 0.248, 0.1
             text: 'Calibration'
             bold: True
-            background_normal: ''
-            background_color: [28/255, 76/255, 116/255,1]
+            background_normal:''
+            background_color: 53/255, 69/255, 81/255, 1
             on_press:
                 root.manager.transition.duration = '0.0'
                 root.manager.current = 'calibration'
         Button:
-            pos_hint: {'x': 0.50, 'top': 1}
-            size_hint: 0.25, 0.1
+            pos_hint: {'x': 0.501, 'top': 1}
+            size_hint: 0.248, 0.1
             text: 'Debug Mode'
             bold: True
-            background_normal: ''
-            background_color: [100/255, 140/255, 172/255,1]
+            background_normal:''
+            background_color: 53/255, 69/255, 81/255, 1
             on_press:
                 root.manager.transition.duration = '0.0'
                 root.manager.current = 'debug'
         Button:
-            pos_hint: {'x': 0.75, 'top': 1}
-            size_hint: 0.25, 0.1
+            pos_hint: {'x': 0.751, 'top': 1}
+            size_hint: 0.248, 0.1
             text: 'FES Mode'
             bold: True
-            background_normal: ''
-            background_color: [108/255, 180/255, 228/255,1]
+            background_normal:''
+            background_color: 53/255, 69/255, 81/255, 1
             on_press:
                 root.manager.transition.duration = '0.0'
                 root.manager.current = 'fes'
+
         Label:
             pos_hint: {'x': 0.0, 'top': 0.1}
             size_hint: 0.25, 0.15
