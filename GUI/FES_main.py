@@ -26,7 +26,7 @@ class serialWindow(Screen):
     result = ListProperty(['Select Port'])
     serialIndicatorC = ListProperty(RED)
     recordIndicatorC = ListProperty(RED)
-
+    
     # This function comes graciously from StackOverflow
     # Finds all available serial ports, and returns as a list
     def FindAllSerialPorts(self):
@@ -74,6 +74,7 @@ class serialWindow(Screen):
 
     def disconnectFromSerial(self):
         global connected
+        #global serialIndicatorC
         if connected == True:
             self.ser.close()
             connected = False
@@ -136,6 +137,10 @@ class fesWindow(Screen):
 
 
 class WindowManager(ScreenManager):
+    serialIndicatorC = ListProperty(RED)
+    recordIndicatorC = ListProperty(RED)
+    if connected:
+        serialIndicatorC = ListProperty(GREEN)
     pass
 
 

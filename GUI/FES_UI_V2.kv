@@ -1,0 +1,112 @@
+#:import MeshLinePlot kivy_garden.graph.MeshLinePlot
+
+<mainScreen>:
+    name: 'serial'
+
+    FloatLayout:
+        canvas:
+            # background-----------------------------------
+            Color:
+                rgb: 178/255, 182/255, 176/255
+            Rectangle:
+                pos: 0, 0
+                size: self.width, self.height
+
+            # background for serial indicators-------------
+            Color:
+                rgb: 53/255, 69/255, 81/255
+            Rectangle:
+                pos: 0, 0
+                size: self.width, 0.055*self.height
+
+            # indicators-----------------------------------
+            # serial connection indicator
+            Color:
+                rgba: root.serialIndicatorC
+            Rectangle:
+                pos: 0.1*self.width, 0.01*self.height
+                size: 0.03*self.width , 0.03*self.height
+
+            # recording indicator
+            Color:
+                rgba: root.recordIndicatorC
+            Rectangle:
+                pos: 0.246*self.width, 0.01*self.height
+                size: 0.03*self.width , 0.03*self.height
+
+        # serial buttons-----------------------------------
+        Label:
+            pos_hint: {'x': 0.0, 'top': 0.1}
+            size_hint: 0.1, 0.15
+            text: 'Connected'
+        Label:
+            pos_hint: {'x': 0.15, 'top': 0.1}
+            size_hint: 0.1, 0.15
+            text: 'Recording'
+        Button:
+            pos_hint: {'x': 0.33, 'top': 0.05}
+            size_hint: 0.18, 0.05
+            text: 'Refresh COM Ports'
+            on_press:
+                root.FindAllSerialPorts()
+        Spinner:
+            pos_hint: {'x': 0.55, 'top': 0.05}
+            size_hint: 0.12, 0.05
+            text: 'Select Port'
+            text_autoupdate: True
+            values: root.result
+            on_text:
+                root.setPort(self.text)
+        Button:
+            pos_hint: {'x': 0.7, 'top': 0.05}
+            size_hint: 0.1, 0.05
+            text: 'Connect'
+            on_press:
+                root.connectToSerial()
+        Button:
+            pos_hint: {'x': 0.85, 'top': 0.05}
+            size_hint: 0.12, 0.05
+            text: 'Disconnect'
+            on_press:
+                root.disconnectFromSerial()
+
+        # graphs for plotting------------------------------
+        Graph:
+            pos_hint: {'x': 0.6, 'top': 0.98}
+            size_hint: 0.39, 0.3
+            border_color: (0,0,0,1)
+            background_color: (178/255, 182/255, 176/255, 1)
+            label_options: {'color': (0,0,0,1)}
+            ymin: -1
+            ymax: 1
+            x_grid: True
+            y_grid: True
+            id: gyroPlot
+            xlabel: ''
+            ylabel: 'Gyroscope'
+        Graph:
+            pos_hint: {'x': 0.6, 'top': 0.67}
+            size_hint: 0.39, 0.3
+            border_color: (0,0,0,1)
+            background_color: (178/255, 182/255, 176/255, 1)
+            label_options: {'color': (0,0,0,1)}
+            ymin: -1
+            ymax: 1
+            x_grid: True
+            y_grid: True
+            id: accelPlot
+            xlabel: ''
+            ylabel: 'Accelerometer'
+        Graph:
+            pos_hint: {'x': 0.6, 'top': 0.36}
+            size_hint: 0.39, 0.3
+            border_color: (0,0,0,1)
+            background_color: (178/255, 182/255, 176/255, 1)
+            label_options: {'color': (0,0,0,1)}
+            ymin: 0
+            ymax: 1.1
+            x_grid: True
+            y_grid: True
+            id: phasePlot
+            xlabel: ''
+            ylabel: 'Phase Variable'
