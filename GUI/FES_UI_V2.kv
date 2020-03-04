@@ -65,6 +65,55 @@
                 source: 'legs.jpg'
                 pos: 0.1*self.width, 0.48*self.height
                 size: self.width*0.4, self.height*0.5
+            # Left Toe
+            Color:
+                rgba: root.leftToeC
+            Ellipse:
+                pos: 0.15*self.width, 0.49*self.height
+                size: 25, 15
+            # Left Heel
+            Color:
+                rgba: root.leftHeelC
+            Ellipse:
+                pos: 0.22*self.width, 0.54*self.height
+                size: 25, 15
+            # Left Plantar
+            Color:
+                rgba: root.leftPlantarC
+            Rectangle:
+                pos: 0.17*self.width, 0.75*self.height
+                size: 25, 15
+            # Left Dorsi
+            Color:
+                rgba: root.leftDorsiC
+            Rectangle:
+                pos: 0.24*self.width, 0.78*self.height
+                size: 25, 15
+
+            # Right Toe
+            Color:
+                rgba: root.rightToeC
+            Ellipse:
+                pos: 0.42*self.width, 0.49*self.height
+                size: 25, 15
+            # Right Heel
+            Color:
+                rgba: root.rightHeelC
+            Ellipse:
+                pos: 0.35*self.width, 0.54*self.height
+                size: 25, 15
+            # Right Plantar
+            Color:
+                rgba: root.rightPlantarC
+            Rectangle:
+                pos: 0.4*self.width, 0.75*self.height
+                size: 25, 15
+            # Right Dorsi
+            Color:
+                rgba: root.rightDorsiC
+            Rectangle:
+                pos: 0.33*self.width, 0.78*self.height
+                size: 25, 15
             
 
         # serial buttons-----------------------------------
@@ -156,6 +205,7 @@
             id: phasePlot
             xlabel: ''
             ylabel: 'Phase Variable'
+
         # mode selection-----------------------------------
         Label:
             pos_hint: {'x': 0.23, 'top': 0.53}
@@ -166,18 +216,24 @@
             size_hint: 0.15, 0.05
             text: 'Standby'
             on_press:
+                root.CONTROLMODE = 0
+                root.AFFECTEDLIMB = 0
                 root.sendSerial('1')
         Button:
             pos_hint: {'x': 0.22, 'top': 0.4}
             size_hint: 0.15, 0.05
             text: 'Trial Mode'
             on_press:
+                root.CONTROLMODE = 0
+                root.AFFECTEDLIMB = 0
                 root.sendSerial('2')
         Button:
             pos_hint: {'x': 0.42, 'top': 0.4}
             size_hint: 0.15, 0.05
             text: 'Debug Mode'
             on_press:
+                root.CONTROLMODE = 0
+                root.AFFECTEDLIMB = 0
                 root.sendSerial('3')
 
         # trial mode control-------------------------------
@@ -190,31 +246,35 @@
             size_hint: 0.13, 0.05
             text: 'Left Leg'
             on_press:
+                root.AFFECTEDLIMB = 1
                 root.sendSerial('2a1')
         Button:
             pos_hint: {'x': 0.02, 'top': 0.2}
             size_hint: 0.13, 0.05
             text: 'FSR Mode'
             on_press:
-                root.sendSerial('21')
+                root.CONTROLMODE = 1
+                root.sendSerial('2c1')
         Button:
             pos_hint: {'x': 0.02, 'top': 0.14}
             size_hint: 0.13, 0.05
             text: 'Start Trial'
             on_press:
-                root.sendSerial('2s')
+                if root.AFFECTEDLIMB > 0 and root.CONTROLMODE > 0:root.sendSerial('2s')
         Button:
             pos_hint: {'x': 0.16, 'top': 0.26}
             size_hint: 0.13, 0.05
             text: 'Right Leg'
             on_press:
+                root.AFFECTEDLIMB = 2
                 root.sendSerial('2a2')
         Button:
             pos_hint: {'x': 0.16, 'top': 0.2}
             size_hint: 0.13, 0.05
             text: 'Phase Mode'
             on_press:
-                root.sendSerial('22')
+                root.CONTROLMODE = 2
+                root.sendSerial('2c2')
         Button:
             pos_hint: {'x': 0.16, 'top': 0.14}
             size_hint: 0.13, 0.05

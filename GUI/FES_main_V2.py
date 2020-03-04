@@ -21,6 +21,9 @@ connected = False
 recording = False
 GREEN = [0,1,0,0.5]
 RED   = [1,0,0,0.5]
+GREENB = [0,1,0,1]
+REDB = [1,0,0,1]
+NOCOLOR = [0,0,0,0]
 NPOINTS = 100
 
 serialPort = 'NONE'
@@ -29,6 +32,17 @@ class mainScreen(FloatLayout):
     result = ListProperty(['Select Port'])
     serialIndicatorC = ListProperty(RED)
     recordIndicatorC = ListProperty(RED)
+    leftToeC = ListProperty(REDB)
+    leftHeelC = ListProperty(REDB)
+    leftPlantarC = ListProperty(NOCOLOR)
+    leftDorsiC = ListProperty(NOCOLOR)
+    rightToeC = ListProperty(REDB)
+    rightHeelC = ListProperty(REDB)
+    rightPlantarC = ListProperty(NOCOLOR)
+    rightDorsiC = ListProperty(NOCOLOR)
+    AFFECTEDLIMB = 0
+    recentlyConnected = False
+
 
     def __init__(self):
         super(mainScreen, self).__init__()
@@ -36,6 +50,8 @@ class mainScreen(FloatLayout):
         self.ACCELDATASTREAM = [[0 for points in range(NPOINTS)] for i in range(3)]
         self.PHASEDATASTREAM = [0 for points in range(NPOINTS)]
         self.OTHERDATA = 0
+        self.AFFECTEDLIMB = 0
+        self.CONTROLMODE = 0
         self.plotGx = MeshLinePlot(color = [1,0,0,1])
         self.plotGy = MeshLinePlot(color = [0,1,0,1])
         self.plotGz = MeshLinePlot(color = [0,0,1,1])
@@ -43,6 +59,13 @@ class mainScreen(FloatLayout):
         self.plotAy = MeshLinePlot(color = [0,1,0,1])
         self.plotAz = MeshLinePlot(color = [0,0,1,1])
         self.plotP = MeshLinePlot(color = [1,0,0,1])
+        self.ids.gyroPlot.add_plot(self.plotGx)
+        self.ids.gyroPlot.add_plot(self.plotGy)
+        self.ids.gyroPlot.add_plot(self.plotGz)
+        self.ids.accelPlot.add_plot(self.plotAx)
+        self.ids.accelPlot.add_plot(self.plotAy)
+        self.ids.accelPlot.add_plot(self.plotAz)
+        self.ids.phasePlot.add_plot(self.plotP)
 
     # This function comes graciously from StackOverflow
     # Finds all available serial ports, and returns as a list
@@ -87,13 +110,9 @@ class mainScreen(FloatLayout):
         print('Connection successful')
         connected = True
         self.serialIndicatorC = GREEN
-        self.ids.gyroPlot.add_plot(self.plotGx)
-        self.ids.gyroPlot.add_plot(self.plotGy)
-        self.ids.gyroPlot.add_plot(self.plotGz)
-        self.ids.accelPlot.add_plot(self.plotAx)
-        self.ids.accelPlot.add_plot(self.plotAy)
-        self.ids.accelPlot.add_plot(self.plotAz)
-        self.ids.phasePlot.add_plot(self.plotP)
+        if self.recentlyConnected == False:
+            self.recentlyConnected = True
+            
         Clock.schedule_interval(self.getValues, 0.001)
         return
 
@@ -104,8 +123,10 @@ class mainScreen(FloatLayout):
             self.ser.close()
             connected = False
             self.serialIndicatorC = RED
-            Clock.unschedule(self.plotLine)
+            Clock.unschedule(self.getValues)
             self.recordIndicatorC = RED
+            self.plantarC = NOCOLOR
+            self.dorsiC = NOCOLOR
         print('disconnected')
         return
 
@@ -113,19 +134,20 @@ class mainScreen(FloatLayout):
         wstr = "%s\n"%(string)
         try:
             self.ser.write(wstr.encode())
+            print(wstr)
         except:
             print("Unable to send %s to serial."%(wstr[:-1]))
         return
     
     def getValues(self, dt):
         if connected:
+            # Attempt to read in the serial data from Teensy
             try:
                 self.ser.flushInput()
                 self.ser.readline().decode('utf8')	# reads garbage
-                rawdata = self.ser.readline().decode('utf8')	# actual reading
-                
+                rawdata = self.ser.readline().decode('utf8').strip()	# actual reading
                 # split by the ';' delimiter
-                groupValues = rawdata[:-1].split(';')
+                groupValues = rawdata.split(';')
 
                 # split each group of values by the ',' delimeter
                 gyro = groupValues[0].split(',')
@@ -133,12 +155,49 @@ class mainScreen(FloatLayout):
                 phaseV = groupValues[2]
                 self.OTHERDATA = groupValues[3].split(',')
                 print(self.OTHERDATA)
+            except:
+                print('error reading data')
+            # 0.003,0.000,0.000;0.040,0.014,-0.200;0.00;0,0,0,0,1,1,0,3
+            # 0.003,0.000,0.000;0.038,0.014,-0.201;0.00;0,0,0,0,0,1,0,2
+
+
+            # Now attempt to parse the read data
+            try:
                 # check if the SD card is working and logging
-                if self.OTHERDATA[5] == '1':
+                if self.OTHERDATA[6] == '1':
                     self.recordIndicatorC = GREEN
                 else:
                     self.recordIndicatorC = RED
+                # set FSR indicators
+                # FSR1 (left) toe
+                if self.OTHERDATA[0] == '1':self.leftToeC = GREENB
+                else: self.leftToeC = REDB
+                # FSR1 (left) heel
+                if self.OTHERDATA[1] == '1':self.leftHeelC = GREENB
+                else: self.leftHeelC = REDB
+                # FSR1 (right) toe
+                if self.OTHERDATA[2] == '1':self.rightToeC = GREENB
+                else: self.rightToeC = REDB
+                # FSR1 (right) heel
+                if self.OTHERDATA[3] == '1':self.rightHeelC = GREENB
+                else: self.rightHeelC = REDB
+                
+                if self.AFFECTEDLIMB == 1:
+                    self.rightDorsiC = NOCOLOR
+                    self.rightPlantarC = NOCOLOR
+                    if self.OTHERDATA[4] == '1': self.leftDorsiC = GREENB
+                    else: self.leftDorsiC = REDB
+                    if self.OTHERDATA[5] == '1': self.leftPlantarC = GREENB
+                    else: self.leftPlantarC = REDB
+                elif self.AFFECTEDLIMB == 2:
+                    self.leftDorsiC = NOCOLOR
+                    self.leftPlantarC = NOCOLOR
+                    if self.OTHERDATA[4] == '1': self.rightDorsiC = GREENB
+                    else: self.rightDorsiC = REDB
+                    if self.OTHERDATA[5] == '1': self.rightPlantarC = GREENB
+                    else: self.rightPlantarC = REDB
 
+                    
                 for i in range(3):
                     self.GYRODATASTREAM[i].pop(0)
                     self.ACCELDATASTREAM[i].pop(0)
@@ -150,7 +209,7 @@ class mainScreen(FloatLayout):
                 self.PHASEDATASTREAM.append(float(phaseV))
                 self.plotLine()
             except:
-                print('error')
+                print('error parsing data')
         return
 
     def plotLine(self):
