@@ -8,6 +8,7 @@ from kivy.properties import ListProperty
 from kivy.properties import BooleanProperty
 from kivy.uix.popup import Popup
 from kivy.uix.label import Label
+from kivy.uix.image import Image
 from kivy_garden.graph import MeshLinePlot
 from kivy.graphics import *
 from kivy.uix.spinner import Spinner
@@ -34,6 +35,7 @@ class mainScreen(FloatLayout):
         self.GYRODATASTREAM = [[0 for points in range(NPOINTS)] for i in range(3)]
         self.ACCELDATASTREAM = [[0 for points in range(NPOINTS)] for i in range(3)]
         self.PHASEDATASTREAM = [0 for points in range(NPOINTS)]
+        self.OTHERDATA = 0
         self.plotGx = MeshLinePlot(color = [1,0,0,1])
         self.plotGy = MeshLinePlot(color = [0,1,0,1])
         self.plotGz = MeshLinePlot(color = [0,0,1,1])
@@ -103,7 +105,17 @@ class mainScreen(FloatLayout):
             connected = False
             self.serialIndicatorC = RED
             Clock.unschedule(self.plotLine)
+            self.recordIndicatorC = RED
         print('disconnected')
+        return
+
+    def sendSerial(self, string):
+        wstr = "%s\n"%(string)
+        try:
+            self.ser.write(wstr.encode())
+        except:
+            print("Unable to send %s to serial."%(wstr[:-1]))
+        return
     
     def getValues(self, dt):
         if connected:
@@ -114,12 +126,19 @@ class mainScreen(FloatLayout):
                 
                 # split by the ';' delimiter
                 groupValues = rawdata[:-1].split(';')
-                
+
                 # split each group of values by the ',' delimeter
                 gyro = groupValues[0].split(',')
                 accel = groupValues[1].split(',')
                 phaseV = groupValues[2]
-                #self.OTHERDATA = groupValues[3].split(',')
+                self.OTHERDATA = groupValues[3].split(',')
+                print(self.OTHERDATA)
+                # check if the SD card is working and logging
+                if self.OTHERDATA[5] == '1':
+                    self.recordIndicatorC = GREEN
+                else:
+                    self.recordIndicatorC = RED
+
                 for i in range(3):
                     self.GYRODATASTREAM[i].pop(0)
                     self.ACCELDATASTREAM[i].pop(0)
@@ -144,6 +163,7 @@ class mainScreen(FloatLayout):
         self.plotAz.points = [(i, self.ACCELDATASTREAM[2][i]) for i in range(len(self.ACCELDATASTREAM[2]))]
         self.plotP.points = [(i, self.PHASEDATASTREAM[i]) for i in range(len(self.PHASEDATASTREAM))]
         return
+
 
 
 # Load in the Kivy UI layout
