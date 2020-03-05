@@ -25,14 +25,14 @@
             # serial connection indicator
             Color:
                 rgba: root.serialIndicatorC
-            Rectangle:
+            Ellipse:
                 pos: 0.1*self.width, 0.01*self.height
                 size: 0.03*self.width , 0.03*self.height
 
             # recording indicator
             Color:
                 rgba: root.recordIndicatorC
-            Rectangle:
+            Ellipse:
                 pos: 0.246*self.width, 0.01*self.height
                 size: 0.03*self.width , 0.03*self.height
 
@@ -120,11 +120,11 @@
         Label:
             pos_hint: {'x': 0.0, 'top': 0.1}
             size_hint: 0.1, 0.15
-            text: 'Connected'
+            text: 'Connected:'
         Label:
             pos_hint: {'x': 0.15, 'top': 0.1}
             size_hint: 0.1, 0.15
-            text: 'Recording'
+            text: 'Logging:'
         Button:
             pos_hint: {'x': 0.33, 'top': 0.05}
             size_hint: 0.18, 0.05
@@ -242,6 +242,7 @@
             size_hint: 0.15, 0.2
             text: 'Trial Mode Control'
         Button:
+            id: leftLegButton
             pos_hint: {'x': 0.02, 'top': 0.26}
             size_hint: 0.13, 0.05
             text: 'Left Leg'
@@ -249,6 +250,7 @@
                 root.AFFECTEDLIMB = 1
                 root.sendSerial('2a1')
         Button:
+            id: fsrModeButton
             pos_hint: {'x': 0.02, 'top': 0.2}
             size_hint: 0.13, 0.05
             text: 'FSR Mode'
@@ -256,12 +258,14 @@
                 root.CONTROLMODE = 1
                 root.sendSerial('2c1')
         Button:
+            id: startTrialButton
             pos_hint: {'x': 0.02, 'top': 0.14}
             size_hint: 0.13, 0.05
             text: 'Start Trial'
             on_press:
                 if root.AFFECTEDLIMB > 0 and root.CONTROLMODE > 0:root.sendSerial('2s')
         Button:
+            id: rightLegButton
             pos_hint: {'x': 0.16, 'top': 0.26}
             size_hint: 0.13, 0.05
             text: 'Right Leg'
@@ -269,6 +273,7 @@
                 root.AFFECTEDLIMB = 2
                 root.sendSerial('2a2')
         Button:
+            id: phaseModeButton
             pos_hint: {'x': 0.16, 'top': 0.2}
             size_hint: 0.13, 0.05
             text: 'Phase Mode'
@@ -276,6 +281,7 @@
                 root.CONTROLMODE = 2
                 root.sendSerial('2c2')
         Button:
+            id: endTrialButton
             pos_hint: {'x': 0.16, 'top': 0.14}
             size_hint: 0.13, 0.05
             text: 'End Trial'
@@ -288,27 +294,45 @@
             size_hint: 0.15, 0.2
             text: 'Debug Mode Control'
         Button:
+            id: dorsalONButton
             pos_hint: {'x': 0.32, 'top': 0.26}
             size_hint: 0.13, 0.05
             text: 'Dorsal ON'
             on_press:
                 root.sendSerial('311')
         Button: 
+            id: plantarONButton
             pos_hint: {'x': 0.32, 'top': 0.2}
             size_hint: 0.13, 0.05
             text: 'Plantar ON'
             on_press:
                 root.sendSerial('321')
         Button:
+            id: startLogButton
+            pos_hint: {'x': 0.32, 'top': 0.14}
+            size_hint: 0.13, 0.05
+            text: 'Start Log'
+            on_press:
+                root.sendSerial('3s')
+        Button:
+            id: dorsalOFFButton
             pos_hint: {'x': 0.46, 'top': 0.26}
             size_hint: 0.13, 0.05
             text: 'Dorsal OFF'
             on_press:
                 root.sendSerial('310')
         Button:
+            id: plantarOFFButton
             pos_hint: {'x': 0.46, 'top': 0.2}
             size_hint: 0.13, 0.05
             text: 'Plantar OFF'
             on_press:
                 root.sendSerial('320')
+        Button:
+            id: endLogButton
+            pos_hint: {'x': 0.46, 'top': 0.14}
+            size_hint: 0.13, 0.05
+            text: 'End Log'
+            on_press:
+                root.sendSerial('3e')
         

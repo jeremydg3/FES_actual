@@ -137,6 +137,7 @@ class mainScreen(FloatLayout):
             print(wstr)
         except:
             print("Unable to send %s to serial."%(wstr[:-1]))
+            self.nothingSent(wstr, serialPort)
         return
     
     def getValues(self, dt):
@@ -154,7 +155,7 @@ class mainScreen(FloatLayout):
                 accel = groupValues[1].split(',')
                 phaseV = groupValues[2]
                 self.OTHERDATA = groupValues[3].split(',')
-                print(self.OTHERDATA)
+                #print(self.OTHERDATA)
             except:
                 print('error reading data')
             # 0.003,0.000,0.000;0.040,0.014,-0.200;0.00;0,0,0,0,1,1,0,3
@@ -223,7 +224,9 @@ class mainScreen(FloatLayout):
         self.plotP.points = [(i, self.PHASEDATASTREAM[i]) for i in range(len(self.PHASEDATASTREAM))]
         return
 
-
+    def nothingSent(self, val, comm):
+        pop = Popup(title = 'No Serial Connected', content = Label(text = 'Could not send "%s" to "%s", check serial connection. \nPress ESC to return or click main window'%(val[:-1], comm)), size_hint = (None, None), size = (400, 200))
+        pop.open()
 
 # Load in the Kivy UI layout
 kv = Builder.load_file('FES_UI_V2.kv')
